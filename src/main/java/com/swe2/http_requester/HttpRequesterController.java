@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 
+/// Controls the programs main view
 public class HttpRequesterController {
     @FXML
     private TableView<String> table;
@@ -20,16 +21,24 @@ public class HttpRequesterController {
         generateEmptyTable();
     }
 
+    /// Generates an empty table
+    ///
+    /// Doesn't contain the final logic. Will be changed (or deleted) at some point
+    /// during the semester
     public void generateEmptyTable() {
         ObservableList<String> items = table.getItems();
 
         for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 2; j++) {
+            for (int j = 0; j < 4; j++) {
                 items.add("");
             }
         }
     }
 
+    /// Sends an http request
+    ///
+    /// Doesn't contain the final logic. Will be changed (or deleted) at some point
+    /// during the semester
     public void sendRequest() {
         if (ThreadLocalRandom.current().nextBoolean()) {
             requestStatus.setText("OK");

@@ -18,11 +18,18 @@ public class HttpRequester extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("HTTP Requester");
+        /// Doesn't find fxml file on launch. No idea why
+        /// For now:
+        /// 1. Comment line right below
+        /// 2. Launch program
+        /// 3. Uncomment line right below
+        /// 4. Launch program again
         scene = new Scene(loadFXML("http_requester"), 640, 800);
         stage.setScene(scene);
         stage.show();
     }
 
+    /// Loads the UI file
     private Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml + ".fxml"));
         return fxmlLoader.load();
