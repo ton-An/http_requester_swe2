@@ -2,16 +2,24 @@ package com.swe2.http_requester;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 
 /// Controls the programs main view
 public class HttpRequesterController {
     @FXML
-    private TableView<String> table;
+    private TableView<TableContent> table;
+
+    @FXML
+    public TableColumn<TableContent, String> name;
+
+    @FXML
+    public TableColumn<TableContent, String> value;
 
     @FXML
     private Label requestStatus;
@@ -26,12 +34,11 @@ public class HttpRequesterController {
     /// Doesn't contain the final logic. Will be changed (or deleted) at some point
     /// during the semester
     public void generateEmptyTable() {
-        ObservableList<String> items = table.getItems();
+        ObservableList<TableContent> items = table.getItems();
 
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 4; j++) {
-                items.add("");
-            }
+        for (int i = 0; i < 20; i++) {
+            items.add(new TableContent("", ""));
+
         }
     }
 
