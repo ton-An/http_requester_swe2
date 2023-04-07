@@ -45,7 +45,7 @@ public class HttpRequesterController {
     }
 
     /**
-     * Sends a http request
+     * Sends an HTTP GET request
      * 
      * This method is called when the send button is clicked
      */
@@ -58,19 +58,32 @@ public class HttpRequesterController {
             HttpClient client = HttpClient.newHttpClient();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
+                    .uri(URI.create(url)).GET()
                     .build();
 
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenAccept((response) -> {
-                String prettyfiedJson = U.formatJson(response.body());
-                responseField.setText(prettyfiedJson);
+                updateResponseField(response.body());
             });
         }
 
     }
 
     /**
-     * Sets the listener for the url text field
+     * Checks if an url is valid
+     * 
+     * @param url The url to check
+     * @return True if the url is valid, false otherwise
+     */
+    private boolean isUrlValid(String url) {
+        String regexUrlPattern = "(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+        final boolean isUrlValid = url.matches(regexUrlPattern);
+
+        return isUrlValid;
+    }
+
+    /**
+     * Sets up the url validity listener
      */
     private void setUrlValidtyListener() {
         urlTextField.setOnKeyTyped(event -> {
@@ -81,7 +94,6 @@ public class HttpRequesterController {
                 setUrlValidityStatus(isUrlValid);
             }
         });
-
     }
 
     /**
@@ -91,10 +103,10 @@ public class HttpRequesterController {
      */
     private void setUrlValidityStatus(boolean isValid) {
         if (isValid) {
-            urlValidityStatus.setText("Valid");
+            urlValidityStatus.setText("OK");
             urlValidityStatus.setTextFill(Color.GREEN);
         } else {
-            urlValidityStatus.setText("Invalid");
+            urlValidityStatus.setText("NOK");
             urlValidityStatus.setTextFill(Color.RED);
         }
     }
@@ -128,7 +140,7 @@ public class HttpRequesterController {
 
         String query = uri.getQuery();
 
-        if (!query.isEmpty()) {
+        if (query != null && !query.isEmpty()) {
             String[] parameters = query.split("&");
 
             for (String parameter : parameters) {
@@ -142,16 +154,22 @@ public class HttpRequesterController {
     }
 
     /**
-     * Checks if an url is valid
+     * Updates the response field
      * 
-     * @param url The url to check
-     * @return True if the url is valid, false otherwise
+     * This method is called when the response is received. It updates the response
+     * field with the response body.
+     * If the response body is a json or xml string, it will be formatted. Otherwise
+     * it will be displayed as is.
+     * 
+     * @param responseBody The response body from an HTTP request
      */
-    private boolean isUrlValid(String url) {
-        String regexUrlPattern = "(https?://|www\\.)[-a-zA-Z0-9+&@#/%?=~_|!:.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-
-        final boolean isUrlValid = url.matches(regexUrlPattern);
-
-        return isUrlValid;
+    private void updateResponseField(String responseBody) {
+        try {
+            final String prettyfiedJson = U.formatJsonOrXml(responseBody);
+            responseBody = prettyfiedJson;
+        } finally {
+            responseField.setText(responseBody);
+        }
     }
+
 }
