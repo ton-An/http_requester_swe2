@@ -1,10 +1,13 @@
 package com.swe2.http_requester;
 
-public class TableContent {
+/**
+ * Represents a row in the parameters table
+ */
+public class ParametersTableContent {
     private String name;
     private String value;
 
-    public TableContent(String name, String value) {
+    public ParametersTableContent(String name, String value) {
         this.name = name;
         this.value = value;
     }
